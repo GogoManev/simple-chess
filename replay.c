@@ -14,54 +14,6 @@ void save_move(char piece, int x, int y, char name[])
     fclose(file);
 }
 
-char **load_replay(char name[])
-{
-    FILE *file = fopen(name, "r");
-    char string[256];
-    fgets(string, 256, file);
-    // printf("%s", string);
-    int size = 0;
-
-    Point R, r, K, Q;
-    R.x = 0;
-    R.y = 0;
-    r.x = 1;
-    r.y = 1;
-    K.x = 2;
-    K.y = 2;
-    Q.x = 3;
-    Q.y = 3;
-
-    int size_flag = 0;
-
-    int len = strlen(string);
-
-    for (int i = 0; i < len; i++)
-    {
-        if (string[i] == '\0' || string[i] == '\n')
-            break;
-        if (size_flag == 0)
-        {
-            if (string[i] == '/')
-            {
-                size_flag = i + 1;
-                break;
-            }
-            if (isdigit((unsigned char)string[i]))
-                size = size * 10 + (string[i] - '0');
-        }
-    }
-    printf("%d\n", size);
-
-    char **board = init_basic_board(size);
-
-    board[R.x][R.y] = 'R';
-    board[r.x][r.y] = 'r';
-    board[K.x][K.y] = 'K';
-    board[Q.x][Q.y] = 'Q';
-    return board;
-}
-
 void stats(char name[])
 {
     FILE *file = fopen(name, "r");
@@ -167,33 +119,22 @@ void play_replay(char name[])
     board[K.x][K.y] = 'K';
     board[Q.x][Q.y] = 'Q';
 
+    char c;
+    scanf("%c", &c);
     printBoard(board);
 
-    int tickster = 0;
-    char c;
     while (fgets(string, 256, file))
     {
-        if(strcmp(string, "EOR") == 0) {
+        scanf("%c", &c);
+        if (strcmp(string, "EOR\n") == 0)
+        {
+            printf("KABOOM");
             break;
         }
-        printf("%s\n", string);
-        for (int i = tickster; i < len; i++)
-        {
-            if (string[i] == '|')
-            {
-                tickster = i + 1;
-                break;
-            }
-            if (isdigit((unsigned char)string[i]))
-                x = x * 10 + (string[i] - '0');
-        }
-        for (int i = tickster; i < len; i++)
-        {
-            if (string[i] == '\n')
-                break;
-            if (isdigit((unsigned char)string[i]))
-                y = y * 10 + (string[i] - '0');
-        }
+        x = 0;
+        y = 0;
+        sscanf(string, "%c%d|%d", &c, &x, &y);
+
         switch (string[0])
         {
         case 'K':
@@ -220,7 +161,7 @@ void play_replay(char name[])
             r.y = y;
             board[r.x][r.y] = 'r';
         }
-        scanf("%c", &c);
+
         printBoard(board);
     }
     printf("dsadas");

@@ -222,7 +222,7 @@ Point *checkmate(char **board, int qX, int qY, int size)
     }
 
     for (int i = 0; i < 8; i++)
-        if (points[i].canMoveThere = 1)
+        if (points[i].canMoveThere == 1)
         {
             for (int j = 0; j < size - 1; j++)
             {
@@ -258,7 +258,7 @@ int moveQueen(char **board)
     int tick = 0;
 
     for (int i = 0; i < 8; i++)
-        if (points[i].canMoveThere = 1)
+        if (points[i].canMoveThere == 1)
         {
             if (!RealPoints)
                 RealPoints = malloc(1 * sizeof(Point));

@@ -50,7 +50,7 @@ int main()
                 {
                     iliketomoveitmoveit++;
                 }
-                if (moveQueen(board))
+                if (!moveQueen(board))
                 {
                     gameover = 1;
                     printBoard(board);
