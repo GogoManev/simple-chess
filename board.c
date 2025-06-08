@@ -191,24 +191,6 @@ void movePiece(char **board, int bX, int bY, char piece, int nX, int nY)
     }
 }
 
-int checkmate(char **board, int qX, int qY)
-{
-    if (
-        (qX == 0 && qY == 0) ||
-        (qX == 0 && qY == board_size2 - 1) ||
-        (qX == board_size2 - 1 && qY == 0) ||
-        (qX == board_size2 - 1 && qY == board_size2 - 1 )
-    )
-    {
-        
-    }
-    else
-    {
-        return 0;
-    }
-    return 1;
-}
-
 void freeBoard(char **board, int bX)
 {
     for (int i = 0; i < bX; i++)
@@ -217,6 +199,46 @@ void freeBoard(char **board, int bX)
     }
 
     free(board);
+}
+
+Point* checkmate(char **board, int qX, int qY, int size)
+{
+    /*if (
+        (qX == 0 && qY == 0) ||
+        (qX == 0 && qY == board_size2 - 1) ||
+        (qX == board_size2 - 1 && qY == 0) ||
+        (qX == board_size2 - 1 && qY == board_size2 - 1 )
+    )*/
+    int flag = 0;
+    //Point points[8];
+    Point* points = malloc(8 * sizeof(Point));
+    int dx[8] = {-1, 0, 1, -1, 1, -1, 0, 1};
+    int dy[8] = {-1, -1, -1, 0, 0, 1, 1, 1};
+
+    for(int i=0;i<8;i++) {
+        points[i].x = qX + dx[i];
+        points[i].y = qY + dy[i];
+        if((points[i].x > -1 && points[i].x < size) && (points[i].y > -1 && points[i].y < size))
+            points[i].canMoveThere = 1;
+    }
+
+    for(int i=0;i<8;i++)
+        if(points[i].canMoveThere = 1)
+        {
+            for(int j=0; j<size-1; j++) {
+                if(board[j][points[i].x] == 'R' || board[j][points[i].x] == 'r') {
+                    points[i].canMoveThere = 0;
+                }
+            }
+            for(int j=0; j<size-1; j++) {
+                if(board[points[i].y][j] == 'R' || board[points[i].y][j] == 'r') {
+                    points[i].canMoveThere = 0;
+                }   
+            }
+        }
+    
+
+    return points;
 }
 
 int moveQueen(char **board, int size)
@@ -233,9 +255,31 @@ int moveQueen(char **board, int size)
             }
         }
     }
-    if (checkmate(board, 1, 1))
-        return 1;
-    else
-    {
+    int flag = 0;
+    Point* points = checkmate(board, x, y, size);
+    Point* RealPoints = NULL;
+    int tick=0;
+    for(int i=0;i<8; i++) {
+        if(points[i].canMoveThere = 1) {
+            if(!RealPoints)
+                RealPoints = malloc(1 * sizeof(Point));
+            else
+                RealPoints = realloc(RealPoints, (1 + tick) * sizeof(Point));
+            RealPoints[tick] = points[i];
+            flag++;
+        }
     }
+    if(flag) {
+        int point = rand() % (tick + 1);
+        board[x][y] == '*';
+        board[RealPoints[point].x][RealPoints[point].y] = 'Q';
+        free(RealPoints);
+        free(points);
+        return 1;
+    }else{
+        free(RealPoints);
+        free(points);
+        return 0;
+    }
+    
 }
