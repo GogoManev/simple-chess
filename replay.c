@@ -12,8 +12,6 @@ void save_move(char piece, int x, int y, char name[])
     fclose(file);
 }
 
-
-
 char **load_replay(char name[])
 {
     int temp_val;
@@ -53,6 +51,17 @@ char **load_replay(char name[])
         board[i] = malloc(size * sizeof(char));
     // return board;
 }
-void play_replay()
+
+void stats(char name[]) {
+    FILE* file = fopen(name, "r");
+    char string[256];
+    while(fgets(string, 256, file) != NULL) {
+        if(string[0] <= '9' && string[0] <= '0')
+            continue;
+        /*общ брой ходове, брой ходове за всяка фигура, брой пъти когато компютъра е поставен в “шах”, други по преценка на ученика*/
+    }
+}
+
+void play_replay(char name[])
 {
 }

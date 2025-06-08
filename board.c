@@ -13,11 +13,11 @@ char **init_board()
 {
     char **board = malloc(board_size * sizeof(char *));
     for (int i = 0; i < board_size; i++)
+    {
         board[i] = malloc(board_size * sizeof(char));
-
-    for (int i = 0; i < board_size; i++)
         for (int j = 0; j < board_size; j++)
             board[i][j] = '*';
+    }
 
     int xRook1, yRook1, xRook2, yRook2;
     int xking, yking, xqueen, yqueen;
@@ -93,10 +93,10 @@ int isWithinBoard(char **board, int nX, int nY)
         return 0;
 }
 
-void moveRook(char **board, char piece, int nX, int nY)
+int moveRook(char **board, char piece, int nX, int nY)
 {
     if (isWithinBoard(board, nX, nY))
-        return;
+        return 0;
 
     if (board[nX][nY] == '*')
     {
@@ -110,14 +110,14 @@ void moveRook(char **board, char piece, int nX, int nY)
                     if (i != nX && j != nY)
                     {
                         printf("Invalid move. Try again.\n");
-                        return;
+                        return 0;
                     }
 
                     board[i][j] = '*';
                     board[nX][nY] = 'R';
                     moveCount++;
                     save_move(piece, nX, nY, "idk.txt");
-                    return;
+                    return 1;
                 }
 
                 if (board[i][j] == 'r' && piece == 'r')
@@ -126,20 +126,21 @@ void moveRook(char **board, char piece, int nX, int nY)
                     if (i != nX && j != nY)
                     {
                         printf("Invalid move. Try again.\n");
-                        return;
+                        return 0;
                     }
 
                     board[i][j] = '*';
                     board[nX][nY] = 'r';
                     moveCount++;
                     save_move(piece, nX, nY, "idk.txt");
-                    return;
+                    return 1;
                 }
             }
         }
     }
     else
         printf("Invalid move. Try again.\n");
+    return 0;
 }
 
 int moveKing(char **board, int nX, int nY)
@@ -169,16 +170,18 @@ int moveKing(char **board, int nX, int nY)
     }
     else
         printf("Invalid move. Try again.\n");
+    return 0;
 }
 
-void movePiece(char **board, char piece, int nX, int nY)
+int movePiece(char **board, char piece, int nX, int nY)
 {
     if (piece == 'R' || piece == 'r')
-        moveRook(board, piece, nX, nY);
+        return moveRook(board, piece, nX, nY);
     else if (piece == 'K')
-        moveKing(board, nX, nY);
+        return moveKing(board, nX, nY);
     else
         printf("Invalid piece. Try again.\n");
+    return 0;
 }
 
 void freeBoard(char **board)
@@ -226,7 +229,7 @@ Point *checkmate(char **board, int qX, int qY, int size)
 
 int moveQueen(char **board)
 {
-    
+
     int x, y;
     for (int i = 0; i < board_size; i++)
         for (int j = 0; j < board_size; j++)
@@ -234,7 +237,7 @@ int moveQueen(char **board)
             {
                 x = i;
                 y = j;
-                //board[i][j] = '*';
+                // board[i][j] = '*';
             }
 
     int flag = 0;
@@ -252,13 +255,12 @@ int moveQueen(char **board)
             RealPoints[tick] = points[i];
             flag++;
         }
-    
+
     if (flag)
     {
         int point = rand() % (tick + 1);
         board[x][y] = '*';
         board[RealPoints[point].x][RealPoints[point].y] = 'Q';
-        printf("%d.%d -- %d.%d\n", x, y, RealPoints[point].x, RealPoints[point].y);
         save_move('Q', RealPoints[point].x, RealPoints[point].y, "idk.txt");
         free(RealPoints);
         free(points);

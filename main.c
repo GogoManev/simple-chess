@@ -10,6 +10,7 @@ int main()
 {
     int isMenu = 1;
     int gameover = 0;
+    int iliketomoveitmoveit=0;
     //char **board = init_board();
     char** board = NULL;
 
@@ -31,6 +32,7 @@ int main()
             //!isMenu;
             srand(time(NULL));
             board = init_board();
+            gameover = 0;
 
             while (!gameover)
             {
@@ -44,7 +46,9 @@ int main()
                 printf("Where do you want to move it: ");
                 scanf("%d %d", &x, &y);
                 
-                movePiece(board, piece, x - 1, y - 1);
+                if(movePiece(board, piece, x - 1, y - 1)) {
+                    iliketomoveitmoveit++;
+                }
                 if (moveQueen(board))
                 {
                     gameover = 1;
@@ -52,18 +56,21 @@ int main()
                 }
                 
             }
+            
+            stats("idk.txt");
+            printf("%d", iliketomoveitmoveit);
             isMenu = 1;
             break;
 
         case 2:
-            int newSize = 1;
-            while (newSize < 3)
+            board_size = 1;
+            while (board_size < 3)
             {
                 printf("Current board size is %dx%d \n", board_size, board_size);
                 printf("Enter new size for the board: ");
-                scanf("%d", &newSize);
+                scanf("%d", &board_size);
             }
-            board_size = newSize;
+            //board_size = newSize;
             freeBoard(board);
             
             
