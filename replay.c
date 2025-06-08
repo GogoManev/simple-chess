@@ -164,6 +164,40 @@ void play_replay(char name[])
 
         printBoard(board);
     }
+    int data;
+    fgets(string, 256, file);
+    sscanf(string, "moves - %d", &data);
+    printf("%d\n", data);
+
+    fgets(string, 256, file);
+    sscanf(string, "checks - %d", &data);
+    printf("%d\n", data);
+
+    fgets(string, 256, file);
+    sscanf(string, "r - %d", &data);
+    printf("%d\n", data);
+
+    fgets(string, 256, file);
+    sscanf(string, "R - %d", &data);
+    printf("%d\n", data);
+
+    fgets(string, 256, file);
+    sscanf(string, "K - %d", &data);
+    printf("%d\n", data);
+
+    fgets(string, 256, file);
+    sscanf(string, "life events - %d", &data);
+    printf("%d\n", data);
+
+    fgets(string, 256, file);
+    sscanf(string, "rooks lost - %d", &data);
+    printf("%d\n", data);
+
+    fgets(string, 256, file);
+    sscanf(string, "rooks gained - %d", &data);
+    printf("%d\n", data);
+    //fgets(string, 256, file);
+
     printf("dsadas");
     freeBoard(board);
 }
