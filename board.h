@@ -3,15 +3,22 @@
 
 extern int board_size;
 
+typedef struct Point
+{
+    int x;
+    int y;
+    int canMoveThere;
+} Point;
+
 char** init_board(int size);
 void printBoard(char **board);
 int isWithinBoard(char **board, int nX, int nY);
 void moveRook(char **board, char piece, int nX, int nY);
 int moveKing(char **board, int nX, int nY);
 void movePiece(char **board, char piece, int nX, int nY);
-int checkmate(char **board);
+Point* checkmate(char **board, int qX, int qY, int size);
 void freeBoard(char **board);
 
-void moveQueen();
+int moveQueen(char **board, int size);
 
 #endif

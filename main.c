@@ -40,6 +40,10 @@ int main()
                 int x, y;
                 scanf("%d %d", &x, &y);
                 movePiece(board, piece, x - 1, y - 1);
+                if(moveQueen(board, board_size)) {
+                    gameover = 1;
+                    printBoard(board);
+                }
                 //moveQueen(); //slay 🙄💅
                 //`(*>﹏<*)′
                 //(✿◡‿◡)
