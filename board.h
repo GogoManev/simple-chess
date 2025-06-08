@@ -2,6 +2,7 @@
 #define BOARD_H
 
 extern int board_size;
+//extern int moves;
 
 typedef struct Point
 {

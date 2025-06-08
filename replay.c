@@ -14,7 +14,7 @@ void save_move(char piece, int x, int y, char name[])
     fclose(file);
 }
 
-void stats(char name[])
+void stats(char name[], int statssssss[8])
 {
     FILE *file = fopen(name, "r");
     char string[256];
@@ -27,14 +27,14 @@ void stats(char name[])
     fclose(file);
     file = fopen(name, "a");
     fprintf(file, "EOR\n"); // end of replay
-    fprintf(file, "moves - ");
-    fprintf(file, "checks - ");
-    fprintf(file, "r - ");
-    fprintf(file, "R - ");
-    fprintf(file, "K - ");
-    fprintf(file, "life events - ");
-    fprintf(file, "rooks lost - ");
-    fprintf(file, "rooks gained - ");
+    fprintf(file, "moves - %d", statssssss[0]);
+    fprintf(file, "checks - %d", statssssss[1]);
+    fprintf(file, "r - %d", statssssss[2]);
+    fprintf(file, "R - %d", statssssss[3]);
+    fprintf(file, "K - %d", statssssss[4]);
+    fprintf(file, "life events - %d", statssssss[5]);
+    fprintf(file, "rooks lost - %d", statssssss[6]);
+    fprintf(file, "rooks gained - %d", statssssss[7]);
 }
 
 void play_replay(char name[])
@@ -196,7 +196,7 @@ void play_replay(char name[])
     fgets(string, 256, file);
     sscanf(string, "rooks gained - %d", &data);
     printf("%d\n", data);
-    //fgets(string, 256, file);
+    // fgets(string, 256, file);
 
     printf("dsadas");
     freeBoard(board);

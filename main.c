@@ -56,9 +56,23 @@ int main()
                     printBoard(board);
                 }
             }
-
-            stats("idk.txt");
-            printf("%d", iliketomoveitmoveit);
+            int statss[8];
+            statss[5, 6, 7] = 0;
+            statss[0] = iliketomoveitmoveit;
+            //fix later
+            statss[1,2,3,4] = 0;
+            
+            printf("moves - %d", statss[0]);
+            printf("checks - %d", statss[1]);
+            printf("r - %d", statss[2]);
+            printf("R - %d", statss[3]);
+            printf("K - %d", statss[4]);
+            printf("life events - %d", statss[5]);
+            printf("rooks lost - %d", statss[6]);
+            printf("rooks gained - %d", statss[7]);
+            
+            stats("idk.txt", stats);
+            //printf("%d", iliketomoveitmoveit);
             isMenu = 1;
             break;
 
