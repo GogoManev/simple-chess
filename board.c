@@ -154,8 +154,11 @@ int moveKing(char **board, int bX, int bY, int nX, int nY)
             {
                 if (board[i][j] == 'K')
                 {
-                    board[i][j] = '*';
-                    board[nX][nY] = 'K';
+                    if (abs(i - nX) <= 1 && abs(j - nY) <= 1)
+                    {
+                        board[i][j] = '*';
+                        board[nX][nY] = 'K';
+                    }
                     return 1;
                 }
             }
