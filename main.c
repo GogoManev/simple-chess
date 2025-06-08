@@ -10,9 +10,9 @@ int main()
 {
     int isMenu = 1;
     int gameover = 0;
-    int iliketomoveitmoveit=0;
-    //char **board = init_board();
-    char** board = NULL;
+    int iliketomoveitmoveit = 0;
+    // char **board = init_board();
+    char **board = NULL;
 
     int choice;
 
@@ -29,7 +29,7 @@ int main()
         switch (choice)
         {
         case 1:
-            //!isMenu;
+            //! isMenu;
             srand(time(NULL));
             board = init_board();
             gameover = 0;
@@ -45,8 +45,9 @@ int main()
 
                 printf("Where do you want to move it: ");
                 scanf("%d %d", &x, &y);
-                
-                if(movePiece(board, piece, x - 1, y - 1)) {
+
+                if (movePiece(board, piece, x - 1, y - 1))
+                {
                     iliketomoveitmoveit++;
                 }
                 if (moveQueen(board))
@@ -54,9 +55,8 @@ int main()
                     gameover = 1;
                     printBoard(board);
                 }
-                
             }
-            
+
             stats("idk.txt");
             printf("%d", iliketomoveitmoveit);
             isMenu = 1;
@@ -70,18 +70,23 @@ int main()
                 printf("Enter new size for the board: ");
                 scanf("%d", &board_size);
             }
-            //board_size = newSize;
+            // board_size = newSize;
             freeBoard(board);
-            
-            
+
             printf("Board size changed to %dx%d \n", board_size, board_size);
 
             isMenu = 1;
             break;
 
         case 3:
-            char** replay_board = load_replay("idk.txt");
-            freeBoard(replay_board);
+            /*char **replay_board = load_replay("idk.txt");
+            if (replay_board)
+            {
+                printBoard(replay_board);
+
+                freeBoard(replay_board);
+            }*/
+            play_replay("idk.txt");
             break;
 
         case 4:

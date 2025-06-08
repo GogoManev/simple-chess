@@ -9,6 +9,18 @@
 int board_size = 8;
 int moveCount = 0;
 
+char **init_basic_board(int size)
+{
+    char **board = malloc(size * sizeof(char *));
+    for (int i = 0; i < size; i++)
+    {
+        board[i] = malloc(size * sizeof(char));
+        for (int j = 0; j < size; j++)
+            board[i][j] = '*';
+    }
+    return board;
+}
+
 char **init_board()
 {
     char **board = malloc(board_size * sizeof(char *));

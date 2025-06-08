@@ -10,6 +10,7 @@ typedef struct Point
     int canMoveThere;
 } Point;
 
+char** init_basic_board(int size);
 char** init_board();
 void printBoard(char **board);
 int isWithinBoard(char **board, int nX, int nY);
