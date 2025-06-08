@@ -139,11 +139,11 @@ void moveRook(char **board, int bX, int bY, int nX, int nY)
     }
 }
 
-void moveKing(char **board, int bX, int bY, int nX, int nY)
+int moveKing(char **board, int bX, int bY, int nX, int nY)
 {
     if (isWithinBoard(board, bX, bY, nX, nY))
     {
-        return;
+        return 0;
     }
 
     if (board[nX][nY] == '*')
@@ -156,7 +156,7 @@ void moveKing(char **board, int bX, int bY, int nX, int nY)
                 {
                     board[i][j] = '*';
                     board[nX][nY] = 'K';
-                    return;
+                    return 1;
                 }
             }
         }
@@ -175,7 +175,11 @@ void movePiece(char **board, int bX, int bY, char piece, int nX, int nY)
     }
     else if (piece == 'K')
     {
-        moveKing(board, bX, bY, nX, nY);
+        if(moveKing(board, bX, bY, nX, nY)) {
+            FILE* file = fopen("idk.txt", "a");
+            fprintf(file, "\nk%d|%d", nX, nY);
+            fclose(file);
+        }
     }
     else
     {
