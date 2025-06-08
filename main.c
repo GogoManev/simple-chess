@@ -40,23 +40,27 @@ int main()
                 int x, y;
                 scanf("%d %d", &x, &y);
                 movePiece(board, piece, x - 1, y - 1);
-                if(moveQueen(board, board_size)) {
+                if (moveQueen(board, board_size))
+                {
                     gameover = 1;
                     printBoard(board);
                 }
-                //moveQueen(); //slay 🙄💅
+                // moveQueen(); //slay 🙄💅
                 //`(*>﹏<*)′
                 //(✿◡‿◡)
-                //☆: .｡. o(≧▽≦)o .｡.:☆
+                // ☆: .｡. o(≧▽≦)o .｡.:☆
             }
             isMenu = 1;
             break;
 
         case 2:
-            int newSize;
-            printf("Current board size is %dx%d \n", board_size, board_size);
-            printf("Enter new size for the board: ");
-            scanf("%d", &newSize);
+            int newSize = 1;
+            while (newSize < 3)
+            {
+                printf("Current board size is %dx%d \n", board_size, board_size);
+                printf("Enter new size for the board: ");
+                scanf("%d", &newSize);
+            }
 
             freeBoard(board);
 
@@ -74,14 +78,18 @@ int main()
             scanf(" %s", filename);
             file = fopen(filename, "r");
 
-            if(file == NULL) {
+            if (file == NULL)
+            {
                 printf("Error opening file.\n");
                 break;
             }
-            
-            int size, xRook1, yRook1, xRook2, yRook2, xking, yking, xqueen, yqueen; 
+
+            int size, xRook1, yRook1, xRook2, yRook2, xking, yking, xqueen, yqueen;
 
             fscanf(file, "%d--%d|%d,%d|%d,%d|%d,%d|%d", &size, &xRook1, &yRook1, &xRook2, &yRook2, &xking, &yking, &xqueen, &yqueen);
+            if(board)
+                free(board);
+            board = init_board(size);
             fclose(file);
             break;
 
