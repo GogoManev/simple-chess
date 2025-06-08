@@ -12,6 +12,6 @@ void movePiece(char **board, int bX, int bY, char piece, int nX, int nY);
 int checkmate(char **board, int bX, int bY);
 void freeBoard(char **board, int bX);
 
-void moveQueen();
+int moveQueen(char **board, int size);
 
 #endif

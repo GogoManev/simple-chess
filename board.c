@@ -6,12 +6,12 @@
 
 int board_size2 = 8;
 
-char** init_board(int size)
+char **init_board(int size)
 {
-    char** board = malloc(board_size2 *  sizeof(char *));
+    char **board = malloc(board_size2 * sizeof(char *));
     for (int i = 0; i < board_size2; i++)
         board[i] = malloc(board_size2 * sizeof(char));
-    
+
     for (int i = 0; i < size; i++)
         for (int j = 0; j < size; j++)
             board[i][j] = '*';
@@ -178,8 +178,9 @@ void movePiece(char **board, int bX, int bY, char piece, int nX, int nY)
     }
     else if (piece == 'K')
     {
-        if(moveKing(board, bX, bY, nX, nY)) {
-            FILE* file = fopen("idk.txt", "a");
+        if (moveKing(board, bX, bY, nX, nY))
+        {
+            FILE *file = fopen("idk.txt", "a");
             fprintf(file, "\nk%d|%d", nX, nY);
             fclose(file);
         }
@@ -190,8 +191,21 @@ void movePiece(char **board, int bX, int bY, char piece, int nX, int nY)
     }
 }
 
-int checkmate(char **board, int bX, int bY)
+int checkmate(char **board, int qX, int qY)
 {
+    if (
+        (qX == 0 && qY == 0) ||
+        (qX == 0 && qY == board_size2 - 1) ||
+        (qX == board_size2 - 1 && qY == 0) ||
+        (qX == board_size2 - 1 && qY == board_size2 - 1 )
+    )
+    {
+        
+    }
+    else
+    {
+        return 0;
+    }
     return 1;
 }
 
@@ -203,4 +217,25 @@ void freeBoard(char **board, int bX)
     }
 
     free(board);
+}
+
+int moveQueen(char **board, int size)
+{
+    int x, y;
+    for (int i = 0; i < size; i++)
+    {
+        for (int j = 0; j < size; j++)
+        {
+            if (board[i][j] == 'Q')
+            {
+                x = i;
+                y = j;
+            }
+        }
+    }
+    if (checkmate(board, 1, 1))
+        return 1;
+    else
+    {
+    }
 }
