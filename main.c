@@ -2,14 +2,14 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
+#include <math.h>
 #include "board.h"
 
 int main()
 {
     int isMenu = 1;
     int gameover = 0;
-    int bX = 8, bY = 8;
-    char **board = init_board(board_size2);
+    char **board = init_board(board_size);
 
     int choice;
 
@@ -28,18 +28,18 @@ int main()
         case 1:
             !isMenu;
             srand(time(NULL));
-            char **board = init_board(board_size2);
+            board = init_board(board_size);
 
             while (!gameover)
             {
-                printBoard(board, bX, bY);
+                printBoard(board);
                 printf("Which figure do you want to move: ");
                 char piece;
                 scanf(" %c", &piece);
                 printf("Where do you want to move it: ");
                 int x, y;
                 scanf("%d %d", &x, &y);
-                movePiece(board, bX, bY, piece, x - 1, y - 1);
+                movePiece(board, piece, x - 1, y - 1);
                 //moveQueen(); //slay 🙄💅
                 //`(*>﹏<*)′
                 //(✿◡‿◡)
@@ -49,29 +49,41 @@ int main()
             break;
 
         case 2:
-
-            printf("Current board size is %dx%d \n", bX, bY);
+            int newSize;
+            printf("Current board size is %dx%d \n", board_size, board_size);
             printf("Enter new size for the board: ");
-            scanf("%d", &bX, &bY);
+            scanf("%d", &newSize);
 
-            freeBoard(board, bX);
+            freeBoard(board);
 
-            board = malloc(bX * sizeof(char *));
-            for (int i = 0; i < bX; i++)
-            {
-                board[i] = malloc(bY * sizeof(char));
-            }
+            board_size = newSize;
+            board = init_board(board_size);
+            printf("Board size changed to %dx%d \n", board_size, board_size);
 
             isMenu = 1;
             break;
 
         case 3:
-            // c
+            FILE *file;
+            printf("Enter the name of the file to replay from (Make sure it's in the same folder): ");
+            char filename[100];
+            scanf(" %s", filename);
+            file = fopen(filename, "r");
+
+            if(file == NULL) {
+                printf("Error opening file.\n");
+                break;
+            }
+            
+            int size, xRook1, yRook1, xRook2, yRook2, xking, yking, xqueen, yqueen; 
+
+            fscanf(file, "%d--%d|%d,%d|%d,%d|%d,%d|%d", &size, &xRook1, &yRook1, &xRook2, &yRook2, &xking, &yking, &xqueen, &yqueen);
+            fclose(file);
             break;
 
         case 4:
             printf("goodbye!\n");
-            freeBoard(board, board_size2);
+            freeBoard(board);
             return 0;
 
         default:

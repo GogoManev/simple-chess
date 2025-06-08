@@ -2,15 +2,17 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
+#include <math.h>
 #include "board.h"
 
-int board_size2 = 8;
+int board_size = 8;
+int moveCount = 0;
 
 char** init_board(int size)
 {
-    char** board = malloc(board_size2 *  sizeof(char *));
-    for (int i = 0; i < board_size2; i++)
-        board[i] = malloc(board_size2 * sizeof(char));
+    char** board = malloc(board_size *  sizeof(char *));
+    for (int i = 0; i < board_size; i++)
+        board[i] = malloc(board_size * sizeof(char));
     
     for (int i = 0; i < size; i++)
         for (int j = 0; j < size; j++)
@@ -19,32 +21,32 @@ char** init_board(int size)
     int xRook1, yRook1, xRook2, yRook2;
     int xking, yking, xqueen, yqueen;
     // generate pos for top 1 and top 2
-    xRook1 = rand() % board_size2;
-    yRook1 = rand() % board_size2;
-    xRook2 = rand() % board_size2;
-    yRook2 = rand() % board_size2;
+    xRook1 = rand() % board_size;
+    yRook1 = rand() % board_size;
+    xRook2 = rand() % board_size;
+    yRook2 = rand() % board_size;
     while (xRook1 == xRook2 && yRook1 == yRook2)
     {
-        xRook2 = rand() % board_size2;
-        yRook2 = rand() % board_size2;
+        xRook2 = rand() % board_size;
+        yRook2 = rand() % board_size;
     }
 
     // generate pos for kings
-    xking = rand() % board_size2;
-    yking = rand() % board_size2;
-    xqueen = rand() % board_size2;
-    yqueen = rand() % board_size2;
+    xking = rand() % board_size;
+    yking = rand() % board_size;
+    xqueen = rand() % board_size;
+    yqueen = rand() % board_size;
     while ((xking == xqueen && yking == yqueen) || (xking == xRook1 && yking == yRook1) ||
            (xking == xRook2 && yking == yRook2) || (xqueen == xRook1 && yqueen == yRook1) ||
            (xqueen == xRook2 && yqueen == yRook2))
     {
-        xking = rand() % board_size2;
-        yking = rand() % board_size2;
-        xqueen = rand() % board_size2;
-        yqueen = rand() % board_size2;
+        xking = rand() % board_size;
+        yking = rand() % board_size;
+        xqueen = rand() % board_size;
+        yqueen = rand() % board_size;
     }
 
-    FILE *file = fopen("idk.txt", "w");
+    FILE *file = fopen("game.txt", "w");
     fprintf(file, "%d--%d|%d,%d|%d,%d|%d,%d|%d", size, xRook1, yRook1, xRook2, yRook2, xking, yking, xqueen, yqueen);
     /*
     0. board size
@@ -63,13 +65,18 @@ char** init_board(int size)
     return board;
 }
 
-void printBoard(char **board, int bX, int bY)
+void printBoard(char **board)
 {
-    printf("  a b c d e f g h\n");
-    for (int i = 0; i < bX; i++)
+    printf(" ");
+    for(int i = 0; i < board_size; i++){
+        printf(" %d", i + 1);
+    }
+    printf("\n");
+
+    for (int i = 0; i < board_size; i++)
     {
         printf("%d", i + 1);
-        for (int j = 0; j < bY; j++)
+        for (int j = 0; j < board_size; j++)
         {
             printf(" %c", board[i][j]);
         }
@@ -77,9 +84,9 @@ void printBoard(char **board, int bX, int bY)
     }
 }
 
-int isWithinBoard(char **board, int bX, int bY, int nX, int nY)
+int isWithinBoard(char **board, int nX, int nY)
 {
-    if (nX < 0 || nX >= bX || nY < 0 || nY >= bY)
+    if (nX < 0 || nX >= board_size || nY < 0 || nY >= board_size)
     {
         printf("Invalid move. Try again.\n");
         return 1;
@@ -90,20 +97,20 @@ int isWithinBoard(char **board, int bX, int bY, int nX, int nY)
     }
 }
 
-void moveRook(char **board, int bX, int bY, int nX, int nY)
+void moveRook(char **board, char piece, int nX, int nY)
 {
-    if (isWithinBoard(board, bX, bY, nX, nY))
+    if (isWithinBoard(board, nX, nY))
     {
         return;
     }
 
     if (board[nX][nY] == '*')
     {
-        for (int i = 0; i < bX; i++)
+        for (int i = 0; i < board_size; i++)
         {
-            for (int j = 0; j < bY; j++)
+            for (int j = 0; j < board_size; j++)
             {
-                if (board[i][j] == 'R')
+                if (board[i][j] == 'R' && piece == 'R')
                 {
 
                     if (i != nX && j != nY)
@@ -114,10 +121,14 @@ void moveRook(char **board, int bX, int bY, int nX, int nY)
 
                     board[i][j] = '*';
                     board[nX][nY] = 'R';
+                    moveCount++;
+                    FILE* file = fopen("game.txt", "a");
+                    fprintf(file, "\n%d. R%d|%d", moveCount, nX+1, nY+1);
+                    fclose(file);
                     return;
                 }
 
-                if (board[i][j] == 'r')
+                if (board[i][j] == 'r' && piece == 'r')
                 {
 
                     if (i != nX && j != nY)
@@ -128,6 +139,10 @@ void moveRook(char **board, int bX, int bY, int nX, int nY)
 
                     board[i][j] = '*';
                     board[nX][nY] = 'r';
+                    moveCount++;
+                    FILE* file = fopen("game.txt", "a");
+                    fprintf(file, "\n%d. r%d|%d", moveCount, nX+1, nY+1);
+                    fclose(file);
                     return;
                 }
             }
@@ -139,18 +154,18 @@ void moveRook(char **board, int bX, int bY, int nX, int nY)
     }
 }
 
-int moveKing(char **board, int bX, int bY, int nX, int nY)
+int moveKing(char **board, int nX, int nY)
 {
-    if (isWithinBoard(board, bX, bY, nX, nY))
+    if (isWithinBoard(board, nX, nY))
     {
         return 0;
     }
 
     if (board[nX][nY] == '*')
     {
-        for (int i = 0; i < bX; i++)
+        for (int i = 0; i < board_size; i++)
         {
-            for (int j = 0; j < bY; j++)
+            for (int j = 0; j < board_size; j++)
             {
                 if (board[i][j] == 'K')
                 {
@@ -158,6 +173,10 @@ int moveKing(char **board, int bX, int bY, int nX, int nY)
                     {
                         board[i][j] = '*';
                         board[nX][nY] = 'K';
+                        moveCount++;
+                        FILE* file = fopen("game.txt", "a");
+                        fprintf(file, "\n%d. K%d|%d", moveCount, nX+1, nY+1);
+                        fclose(file);
                     }
                     return 1;
                 }
@@ -170,34 +189,27 @@ int moveKing(char **board, int bX, int bY, int nX, int nY)
     }
 }
 
-void movePiece(char **board, int bX, int bY, char piece, int nX, int nY)
+void movePiece(char **board, char piece, int nX, int nY)
 {
-    if (piece == 'R' || piece == 'r')
-    {
-        moveRook(board, bX, bY, nX, nY);
-    }
-    else if (piece == 'K')
-    {
-        if(moveKing(board, bX, bY, nX, nY)) {
-            FILE* file = fopen("idk.txt", "a");
-            fprintf(file, "\nk%d|%d", nX, nY);
-            fclose(file);
-        }
-    }
-    else
-    {
+    if (piece == 'R'){
+        moveRook(board, piece, nX, nY);
+    } else if(piece == 'r'){
+        moveRook(board, piece, nX, nY);
+    } else if (piece == 'K'){
+        moveKing(board, nX, nY);
+    } else{
         printf("Invalid piece. Try again.\n");
     }
 }
 
-int checkmate(char **board, int bX, int bY)
+int checkmate(char **board)
 {
     return 1;
 }
 
-void freeBoard(char **board, int bX)
+void freeBoard(char **board)
 {
-    for (int i = 0; i < bX; i++)
+    for (int i = 0; i < board_size; i++)
     {
         free(board[i]);
     }
