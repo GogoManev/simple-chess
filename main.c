@@ -4,12 +4,14 @@
 #include <string.h>
 #include <math.h>
 #include "board.h"
+#include "replay.h"
 
 int main()
 {
     int isMenu = 1;
     int gameover = 0;
-    char **board = init_board(board_size);
+    //char **board = init_board();
+    char** board = NULL;
 
     int choice;
 
@@ -28,7 +30,7 @@ int main()
         case 1:
             !isMenu;
             srand(time(NULL));
-            board = init_board(board_size);
+            board = init_board();
 
             while (!gameover)
             {
@@ -40,15 +42,12 @@ int main()
                 int x, y;
                 scanf("%d %d", &x, &y);
                 movePiece(board, piece, x - 1, y - 1);
-                if (moveQueen(board, board_size))
+                if (!moveQueen(board, board_size))
                 {
                     gameover = 1;
                     printBoard(board);
                 }
-                // moveQueen(); //slay 🙄💅
-                //`(*>﹏<*)′
-                //(✿◡‿◡)
-                // ☆: .｡. o(≧▽≦)o .｡.:☆
+                
             }
             isMenu = 1;
             break;
@@ -61,36 +60,18 @@ int main()
                 printf("Enter new size for the board: ");
                 scanf("%d", &newSize);
             }
-
-            freeBoard(board);
-
             board_size = newSize;
-            board = init_board(board_size);
+            freeBoard(board);
+            
+            
             printf("Board size changed to %dx%d \n", board_size, board_size);
 
             isMenu = 1;
             break;
 
         case 3:
-            FILE *file;
-            printf("Enter the name of the file to replay from (Make sure it's in the same folder): ");
-            char filename[100];
-            scanf(" %s", filename);
-            file = fopen(filename, "r");
-
-            if (file == NULL)
-            {
-                printf("Error opening file.\n");
-                break;
-            }
-
-            int size, xRook1, yRook1, xRook2, yRook2, xking, yking, xqueen, yqueen;
-
-            fscanf(file, "%d--%d|%d,%d|%d,%d|%d,%d|%d", &size, &xRook1, &yRook1, &xRook2, &yRook2, &xking, &yking, &xqueen, &yqueen);
-            if(board)
-                free(board);
-            board = init_board(size);
-            fclose(file);
+            char** replay_board = load_replay("idk.txt");
+            freeBoard(replay_board);
             break;
 
         case 4:
@@ -99,7 +80,7 @@ int main()
             return 0;
 
         default:
-            printf("bru really, u cant chose one of da 4 options?? u so stupidz foreal\n");
+            printf("Invalid option. Please try again.\n");
             break;
         }
     }
