@@ -224,28 +224,25 @@ Point *checkmate(char **board, int qX, int qY, int size)
     return points;
 }
 
-int moveQueen(char **board, int size)
+int moveQueen(char **board)
 {
+    
     int x, y;
-    for (int i = 0; i < size; i++)
-    {
-        for (int j = 0; j < size; j++)
-        {
+    for (int i = 0; i < board_size; i++)
+        for (int j = 0; j < board_size; j++)
             if (board[i][j] == 'Q')
             {
                 x = i;
                 y = j;
                 //board[i][j] = '*';
             }
-        }
-    }
-    //printf("x - %d y -%d")
+
     int flag = 0;
-    Point *points = checkmate(board, x, y, size);
+    Point *points = checkmate(board, x, y, board_size);
     Point *RealPoints = NULL;
     int tick = 0;
+
     for (int i = 0; i < 8; i++)
-    {
         if (points[i].canMoveThere = 1)
         {
             if (!RealPoints)
@@ -255,11 +252,11 @@ int moveQueen(char **board, int size)
             RealPoints[tick] = points[i];
             flag++;
         }
-    }
+    
     if (flag)
     {
         int point = rand() % (tick + 1);
-        board[y][x] == '*';
+        board[x][y] = '*';
         board[RealPoints[point].x][RealPoints[point].y] = 'Q';
         printf("%d.%d -- %d.%d\n", x, y, RealPoints[point].x, RealPoints[point].y);
         save_move('Q', RealPoints[point].x, RealPoints[point].y, "idk.txt");

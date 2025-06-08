@@ -19,6 +19,6 @@ void movePiece(char **board, char piece, int nX, int nY);
 Point* checkmate(char **board, int qX, int qY, int size);
 void freeBoard(char **board);
 
-int moveQueen(char **board, int size);
+int moveQueen(char **board);
 
 #endif

@@ -28,21 +28,24 @@ int main()
         switch (choice)
         {
         case 1:
-            !isMenu;
+            //!isMenu;
             srand(time(NULL));
             board = init_board();
 
             while (!gameover)
             {
+                char piece;
+                int x, y;
+
                 printBoard(board);
                 printf("Which figure do you want to move: ");
-                char piece;
                 scanf(" %c", &piece);
+
                 printf("Where do you want to move it: ");
-                int x, y;
                 scanf("%d %d", &x, &y);
+                
                 movePiece(board, piece, x - 1, y - 1);
-                if (!moveQueen(board, board_size))
+                if (moveQueen(board))
                 {
                     gameover = 1;
                     printBoard(board);
