@@ -3,21 +3,10 @@
 #include <time.h>
 #include <string.h>
 
-enum PieceType {
-    TOP1,
-    TOP2,
-    KING,
-    BOTKING
-};
-//64
-typedef struct Piece
-{
-    char piece;
-    int x;
-    int y;
-} Piece;
+#include"board.h"
 
 
+/*
 void init_board(char **board, int bX, int bY)
 {
 
@@ -52,6 +41,18 @@ void init_board(char **board, int bX, int bY)
         xking2 = rand() % bX;
         yking2 = rand() % bY;
     }
+
+    FILE* file = fopen("idk.txt", "w");
+    fprintf(file, "%d--%d|%d,%d|%d,%d|%d,%d|%d", xSOP1, ySOP1, xSOP2, ySOP2, xking, yking, xking2, yking2);
+    /*
+    0. board size
+    1. top 1 - x,y
+    2. top 2 - x,y
+    3. king (player) - x,y
+    4. king (bot) - x,y
+    */
+   /*
+    fclose(file);
 
     board[xSOP1][ySOP1] = 'R';
     board[xSOP2][ySOP2] = 'r';
@@ -164,17 +165,19 @@ void freeBoard(char **board, int bX)
         }
 
     free(board);
-}
+}*/
 
 int main()
 {
+    //board_size2 = 7;
     int isMenu = 1;
     int gameover = 0;
     int bX = 8, bY = 8;
-    char **board = malloc(bX * sizeof(char *));
+    /*char **board = malloc(bX * sizeof(char *));
     for (int i = 0; i < bX; i++) {
         board[i] = malloc(bY * sizeof(char));
-    }
+    }*/
+   //char** board = init_board(board_size2, board_size2, board_size2);
 
 
     int choice;
@@ -193,7 +196,7 @@ int main()
         case 1:
         !isMenu;
         srand(time(NULL));
-        init_board(board, bX, bY);
+        char** board = init_board(board_size2);
 
         while (!gameover) {
             printBoard(board, bX, bY);
@@ -230,7 +233,7 @@ int main()
         
         case 4:
             printf("goodbye!\n");
-            freeBoard(board, bX);
+            freeBoard(board, board_size2);
             return 0;
         
         default:
