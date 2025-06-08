@@ -217,71 +217,70 @@ Point *checkmate(char **board, int qX, int qY, int size)
     {
         points[i].x = qX + dx[i];
         points[i].y = qY + dy[i];
-        if ((points[i].x > -1 && points[i].x < size) && (points[i].y > -1 && points[i].y < size))
+        points[i].canMoveThere = 0;
+
+        if ((points[i].x >= 0 && points[i].x < size) && (points[i].y >= 0 && points[i].y < size))
             points[i].canMoveThere = 1;
     }
 
     for (int i = 0; i < 8; i++)
+    {
         if (points[i].canMoveThere == 1)
         {
-            for (int j = 0; j < size - 1; j++)
+            for (int j = 0; j < size; j++)
             {
-                if (board[j][points[i].x] == 'R' || board[j][points[i].x] == 'r')
+                if (board[points[i].x][j] == 'R' || board[points[i].x][j] == 'r' ||
+                    board[j][points[i].y] == 'R' || board[j][points[i].y] == 'r')
+                {
                     points[i].canMoveThere = 0;
-            }
-            for (int j = 0; j < size - 1; j++)
-            {
-                if (board[points[i].y][j] == 'R' || board[points[i].y][j] == 'r')
-                    points[i].canMoveThere = 0;
+                    break;
+                }
             }
         }
+    }
 
     return points;
 }
 
 int moveQueen(char **board)
 {
-
-    int x, y;
+    int x = -1, y = -1;
     for (int i = 0; i < board_size; i++)
         for (int j = 0; j < board_size; j++)
             if (board[i][j] == 'Q')
             {
                 x = i;
                 y = j;
-                // board[i][j] = '*';
             }
 
-    int flag = 0;
-    Point *points = checkmate(board, x, y, board_size);
-    Point *RealPoints = NULL;
-    int tick = 0;
+    if (x == -1 || y == -1)
+        return 0;
 
+    Point *points = checkmate(board, x, y, board_size);
+
+    int validCount = 0;
     for (int i = 0; i < 8; i++)
         if (points[i].canMoveThere == 1)
-        {
-            if (!RealPoints)
-                RealPoints = malloc(1 * sizeof(Point));
-            else
-                RealPoints = realloc(RealPoints, (1 + tick) * sizeof(Point));
-            RealPoints[tick] = points[i];
-            flag++;
-        }
+            validCount++;
 
-    if (flag)
+    if (validCount == 0)
     {
-        int point = rand() % (tick + 1);
-        board[x][y] = '*';
-        board[RealPoints[point].x][RealPoints[point].y] = 'Q';
-        save_move('Q', RealPoints[point].x, RealPoints[point].y, "idk.txt");
-        free(RealPoints);
-        free(points);
-        return 1;
-    }
-    else
-    {
-        free(RealPoints);
         free(points);
         return 0;
     }
+
+    Point *RealPoints = malloc(validCount * sizeof(Point));
+    int tick = 0;
+    for (int i = 0; i < 8; i++)
+        if (points[i].canMoveThere == 1)
+            RealPoints[tick++] = points[i];
+
+    int point = rand() % validCount;
+    board[x][y] = '*';
+    board[RealPoints[point].x][RealPoints[point].y] = 'Q';
+    save_move('Q', RealPoints[point].x, RealPoints[point].y, "idk.txt");
+
+    free(RealPoints);
+    free(points);
+    return 1;
 }

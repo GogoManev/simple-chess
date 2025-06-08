@@ -80,7 +80,6 @@ int main()
             board_size = 1;
             while (board_size < 3)
             {
-                printf("Current board size is %dx%d \n", board_size, board_size);
                 printf("Enter new size for the board: ");
                 scanf("%d", &board_size);
             }
