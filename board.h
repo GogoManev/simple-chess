@@ -2,6 +2,11 @@
 #define BOARD_H
 
 extern int board_size;
+extern int all_moves;
+extern int Rook_moves;
+extern int rook_moves;
+extern int king_moves;
+extern int checks;
 //extern int moves;
 
 typedef struct Point

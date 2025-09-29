@@ -27,14 +27,15 @@ void stats(char name[], int statssssss[8])
     fclose(file);
     file = fopen(name, "a");
     fprintf(file, "EOR\n"); // end of replay
-    fprintf(file, "moves - %d", statssssss[0]);
-    fprintf(file, "checks - %d", statssssss[1]);
-    fprintf(file, "r - %d", statssssss[2]);
-    fprintf(file, "R - %d", statssssss[3]);
-    fprintf(file, "K - %d", statssssss[4]);
-    fprintf(file, "life events - %d", statssssss[5]);
-    fprintf(file, "rooks lost - %d", statssssss[6]);
-    fprintf(file, "rooks gained - %d", statssssss[7]);
+    fprintf(file, "moves - %d\n", statssssss[0]);
+    fprintf(file, "checks - %d\n", statssssss[1]);
+    fprintf(file, "r - %d\n", rook_moves);
+    fprintf(file,"R - %d\n" , Rook_moves);
+    fprintf(file, "K - %d\n", statssssss[4]);
+    fprintf(file, "life events - %d\n", statssssss[5]);
+    fprintf(file, "rooks lost - %d\n", statssssss[6]);
+    fprintf(file, "rooks gained - %d\n", statssssss[7]);
+    fclose(file);
 }
 
 void play_replay(char name[])
@@ -127,10 +128,7 @@ void play_replay(char name[])
     {
         scanf("%c", &c);
         if (strcmp(string, "EOR\n") == 0)
-        {
-            printf("KABOOM");
             break;
-        }
         x = 0;
         y = 0;
         sscanf(string, "%c%d|%d", &c, &x, &y);
@@ -155,16 +153,27 @@ void play_replay(char name[])
             R.x = x;
             R.y = y;
             board[R.x][R.y] = 'R';
+            break;
         case 'r':
             board[r.x][r.y] = '*';
             r.x = x;
             r.y = y;
             board[r.x][r.y] = 'r';
+            break;
         }
 
         printBoard(board);
     }
     int data;
+    char bufffer[256];
+
+    for(int i=0;i<8;i++)
+    {
+        fgets(bufffer, 256, file);
+        printf("%s", bufffer);
+    }
+
+/*
     fgets(string, 256, file);
     sscanf(string, "moves - %d", &data);
     printf("%d\n", data);
@@ -196,8 +205,9 @@ void play_replay(char name[])
     fgets(string, 256, file);
     sscanf(string, "rooks gained - %d", &data);
     printf("%d\n", data);
+*/
     // fgets(string, 256, file);
 
-    printf("dsadas");
+    //printf("dsadas");
     freeBoard(board);
 }

@@ -9,6 +9,12 @@
 int board_size = 8;
 int moveCount = 0;
 
+int all_moves = 0;
+int Rook_moves = 0;
+int rook_moves = 0;
+int king_moves = 0;
+int checks = 0;
+
 char **init_basic_board(int size)
 {
     char **board = malloc(size * sizeof(char *));
@@ -129,6 +135,7 @@ int moveRook(char **board, char piece, int nX, int nY)
                     board[nX][nY] = 'R';
                     moveCount++;
                     save_move(piece, nX, nY, "idk.txt");
+                    Rook_moves++;
                     return 1;
                 }
 
@@ -145,6 +152,7 @@ int moveRook(char **board, char piece, int nX, int nY)
                     board[nX][nY] = 'r';
                     moveCount++;
                     save_move(piece, nX, nY, "idk.txt");
+                    rook_moves++;
                     return 1;
                 }
             }
@@ -175,6 +183,7 @@ int moveKing(char **board, int nX, int nY)
                         moveCount++;
                         save_move('K', nX, nY, "idk.txt");
                     }
+                    king_moves++;
                     return 1;
                 }
             }
@@ -188,9 +197,19 @@ int moveKing(char **board, int nX, int nY)
 int movePiece(char **board, char piece, int nX, int nY)
 {
     if (piece == 'R' || piece == 'r')
-        return moveRook(board, piece, nX, nY);
+    {
+        int a = moveRook(board, piece, nX, nY);
+        if(a)
+            all_moves++;
+        return a;
+    }
     else if (piece == 'K')
-        return moveKing(board, nX, nY);
+    {
+        int a = moveKing(board, nX, nY);
+        if (a)
+            all_moves++;
+        return a;
+    }
     else
         printf("Invalid piece. Try again.\n");
     return 0;
@@ -209,6 +228,7 @@ void freeBoard(char **board)
 
 Point *checkmate(char **board, int qX, int qY, int size)
 {
+    int flag=0;
     Point *points = malloc(8 * sizeof(Point));
     int dx[8] = {-1, 0, 1, -1, 1, -1, 0, 1};
     int dy[8] = {-1, -1, -1, 0, 0, 1, 1, 1};
@@ -232,6 +252,8 @@ Point *checkmate(char **board, int qX, int qY, int size)
                 if (board[points[i].x][j] == 'R' || board[points[i].x][j] == 'r' ||
                     board[j][points[i].y] == 'R' || board[j][points[i].y] == 'r')
                 {
+                    if(!flag)
+                    {checks++;flag++;}
                     points[i].canMoveThere = 0;
                     break;
                 }

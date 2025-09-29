@@ -61,17 +61,18 @@ int main()
             statss[0] = iliketomoveitmoveit;
             //fix later
             statss[1,2,3,4] = 0;
+            statss[5] = rand() % all_moves;
             
-            printf("moves - %d", statss[0]);
-            printf("checks - %d", statss[1]);
-            printf("r - %d", statss[2]);
-            printf("R - %d", statss[3]);
-            printf("K - %d", statss[4]);
-            printf("life events - %d", statss[5]);
-            printf("rooks lost - %d", statss[6]);
-            printf("rooks gained - %d", statss[7]);
+            printf("moves - %d\n", all_moves); statss[0] = all_moves;
+            printf("checks - %d\n", checks); statss[1] = checks;
+            printf("r - %d\n", rook_moves); statss[2] = rook_moves;
+            printf("R - %d\n", Rook_moves); statss[3] = Rook_moves;
+            printf("K - %d\n", king_moves); statss[4] = king_moves;
+            printf("life events - %d\n", statss[5]);
+            printf("rooks lost - %d\n", statss[6]);
+            printf("rooks gained - %d\n", statss[7]);
             
-            stats("idk.txt", stats);
+            stats("idk.txt", statss);
             //printf("%d", iliketomoveitmoveit);
             isMenu = 1;
             break;

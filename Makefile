@@ -1,6 +1,6 @@
 all:
 	gcc ./main.c ./board.c ./replay.c
-	./a.exe
+	./a.out
 
 clean:
-	del a.exe
+	rm a.out
